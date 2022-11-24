@@ -34,6 +34,9 @@ export const productSlice = createSlice({
 		emptyState: (state, { payload }) => {
 			state.items = payload;
 		},
+		emptyCart: (state, { payload }) => {
+			state.cart = payload;
+		},
 	},
 });
 
@@ -44,5 +47,6 @@ export const {
 	increaseQty,
 	decreaseQty,
 	emptyState,
+	emptyCart,
 } = productSlice.actions;
 export default productSlice.reducer;

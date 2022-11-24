@@ -47,6 +47,7 @@ exports.loginUser = async (req, res) => {
 		const token = jwt.sign({ id: myUser.id }, secretKey);
 		res.cookie("mycookie", token).status(200).json({
 			message: "User Logged in Succesfully",
+			id: myUser.id,
 			name: myUser.name,
 			email: myUser.email,
 			token,

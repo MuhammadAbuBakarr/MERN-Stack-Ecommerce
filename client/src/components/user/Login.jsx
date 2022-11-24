@@ -18,7 +18,8 @@ const Login = () => {
 				password,
 			});
 			if (status === 200) {
-				dispatch(loginUser(data.name));
+				const { name, id } = data;
+				dispatch(loginUser({ name, id }));
 				nav("/");
 			}
 		} catch (e) {

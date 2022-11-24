@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addCart, removeCart } from "../../redux/productsSlice";
+import { Link } from "react-router-dom";
 
 const SingleProduct = (props) => {
 	const user = useSelector((state) => state.users.isLoggedIn);
-
 	const product = {
 		id: props.id,
 		name: props.name,
@@ -71,7 +71,7 @@ const SingleProduct = (props) => {
 
 				<div className="px-5 pb-5">
 					<h3 className="text-gray-900 font-semibold text-xl tracking-tight text-center dark:text-white">
-						{props.name}
+						<Link to={`${props.id}`}>{props.name}</Link>
 					</h3>
 
 					<div className="flex items-center mt-2.5 mb-5">

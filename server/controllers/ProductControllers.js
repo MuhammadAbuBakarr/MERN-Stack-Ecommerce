@@ -6,23 +6,27 @@ const storage = multer.diskStorage({
 	destination: (req, file, callback) => {
 		callback(
 			null,
-			"D:/Coding Projects/Redux ToolKit Practice/rtk/public/uploads"
+			"D:/Coding Projects/Redux ToolKit Practice/client/public/uploads/"
 		);
 	},
 	filename: (req, file, callback) => {
-		const replaced = file.originalname.replaceAll(" ", "-");
-		imageName = Date.now() + "Change" + replaced;
+		const replaced = file.originalname.slice(-6);
+
+		imageName = Date.now() + "Product" + replaced;
 		callback(null, imageName);
 	},
 });
 exports.upload = multer({ storage: storage });
+
+// Routes
 exports.addProduct = async (req, res) => {
 	const image = imageName;
 	console.log(image);
 	console.log(req.body);
-	let { stock } = req.body;
+	let { stock, price } = req.body;
+	price = Number(price);
 	stock = Number(stock);
-	const payload = { ...req.body, stock, image };
+	const payload = { ...req.body, stock, price, image };
 	try {
 		const response = await productModal.create(payload);
 		console.log(response);
@@ -33,16 +37,11 @@ exports.addProduct = async (req, res) => {
 		console.log(e.message);
 	}
 };
-exports.getAllProducts = async (req, res) => {
+exports.getAllProducts = (req, res) => {
 	try {
-		const response = productModal.find({}, (err, data) => {
-			console.log(data);
+		productModal.find({}, (err, data) => {
 			res.status(200).json(data);
 		});
-
-		if (!response) {
-			res.status(401);
-		}
 	} catch (e) {
 		console.log(e.message);
 		res.status(401);
@@ -89,10 +88,7 @@ exports.singleProduct = (req, res) => {
 				});
 			}
 
-			res.status(201).json({
-				status: "Returning Single Product",
-				data,
-			});
+			res.status(201).json(data);
 		});
 	} catch (error) {
 		console.log(error.message);

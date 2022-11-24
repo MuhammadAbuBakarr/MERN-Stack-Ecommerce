@@ -34,14 +34,15 @@ const SingleCartItem = (props) => {
 					/>
 
 					<div className="flex flex-col ml-3">
-						<span className="md:text-md  font-medium">{props.title}</span>
-						<span className="text-xs  font-light text-gray-400">
-							Product id {props.id}
-						</span>
+						<span className="md:text-md  font-medium">{props.name}</span>
+						<span className="text-xs  font-light text-gray-400">{`Stock Number ${props.id.substring(
+							0,
+							8
+						)}...`}</span>
 					</div>
 				</div>
 
-				<div className="flex  justify-center items-center">
+				<div className="flex justify-center items-center">
 					<div className="pr-8  flex justify-center items-center">
 						<button
 							className="font-semibold p-1 cursor-pointer"

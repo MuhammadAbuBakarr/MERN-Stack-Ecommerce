@@ -1,13 +1,39 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { emptyCart } from "../../redux/productsSlice";
 import SingleCartItem from "./SingleCartItem";
-import { logoutUser } from "../../redux/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const CartPage = () => {
 	const dispatch = useDispatch();
-
-	const user = useSelector((state) => state.users);
+	const nav = useNavigate();
+	const purchasedItems = [];
 	const cartItems = useSelector((state) => state.products.cart);
+	const userId = useSelector((state) => state.users.id);
+	const postingOrder = async () => {
+		cartItems.forEach((item) => {
+			const { id, quantity } = item;
+			const orders = {
+				id,
+				quantity,
+				userId,
+			};
+			purchasedItems.push(orders);
+		});
+
+		try {
+			const { status } = await axios.post("/order", purchasedItems);
+			console.log(status);
+			if (status === 201) {
+				dispatch(emptyCart([]));
+				nav("/myOrders");
+			}
+		} catch (e) {
+			console.log(e.message);
+		}
+	};
+
 	const getTotal = () => {
 		let totalQuantity = 0;
 		let totalPrice = 0;
@@ -29,8 +55,9 @@ const CartPage = () => {
 		return cartItems.map((e) => {
 			return (
 				<SingleCartItem
+					key={e.id}
 					image={e.image}
-					title={e.title}
+					name={e.name}
 					id={e.id}
 					price={e.price}
 					quantity={e.quantity}
@@ -73,7 +100,7 @@ const CartPage = () => {
 										</span>
 
 										<span className="text-xs underline text-red-400 ">
-											Put Random Details
+											Dummy Checkout with empty fields
 										</span>
 
 										<div className="overflow-visible flex justify-between items-center mt-2">
@@ -168,7 +195,10 @@ const CartPage = () => {
 											</div>
 										</div>
 
-										<button className="h-12 w-full bg-blue-500 rounded focus:outline-none text-white hover:bg-blue-600">
+										<button
+											onClick={postingOrder}
+											className="h-12 w-full bg-blue-500 rounded focus:outline-none text-white hover:bg-blue-600"
+										>
 											Check Out
 										</button>
 									</div>

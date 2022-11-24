@@ -8,12 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 const Signup = () => {
 	const dispatch = useDispatch();
-	const state = useSelector((state) => state);
-	console.log(state);
 
 	const resetState = () => {
-		console.log("reset");
-		console.log(state);
 		dispatch(emptyState([]));
 		dispatch(emptyState2);
 	};

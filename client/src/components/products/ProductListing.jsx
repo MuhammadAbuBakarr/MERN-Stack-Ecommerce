@@ -4,15 +4,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { addProducts } from "../../redux/productsSlice";
 import SingleProduct from "./SingleProduct";
 
-const api = "https://fakestoreapi.com/products/";
+// const api = "https://fakestoreapi.com/products/";
 
 const ProductListing = () => {
 	const dispatch = useDispatch();
 	const products = useSelector((state) => state.products.items);
+
 	const fetchProducts = async () => {
 		try {
 			const { status, data } = await axios.get("/product");
-
 			if (status === 200) {
 				dispatch(addProducts(data));
 			} else {

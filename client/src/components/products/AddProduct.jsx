@@ -15,7 +15,6 @@ const AddProduct = () => {
 		category: "",
 	});
 	const changeImage = (e) => {
-		console.log("Change Image");
 		const name = e.target.files[0];
 		setimage(name);
 	};
@@ -28,18 +27,7 @@ const AddProduct = () => {
 		setform({ ...form, [keyName]: value });
 	};
 
-	console.log(select);
-
-	// const handleAddrTypeChange = (e) => {
-	// 	setAddrType(e.target.value);
-	// 	console.log(addrtype);
-	// };
-
 	const postData = async (e) => {
-		// const imageName = image.name;
-		// const payload = { ...form, image };
-		// console.log(payload);
-
 		e.preventDefault();
 		const formData = new FormData();
 		formData.append("id", form.id);
@@ -50,19 +38,13 @@ const AddProduct = () => {
 		formData.append("category", select);
 		formData.append("image", image);
 		try {
+			console.log("enter try");
 			const res = await axios.post("/product", formData);
-			console.log(res);
+			console.log("exit try");
 		} catch (e) {
 			console.log(e.response.status);
 			console.log(e.message);
 		}
-
-		// setform({
-		// 	id: uuidv4(),
-		// 	name: "",
-		// 	description: "",
-		// 	stock: 0,
-		// });
 	};
 
 	return (
@@ -98,7 +80,7 @@ const AddProduct = () => {
 						type="number"
 						className="p-4 border-2 "
 						placeholder="Enter Stock Here"
-						value={form.stock}
+						value={form.stock === 0 ? "Enter Stock Here" : form.stock}
 						onChange={handleInput}
 						name="stock"
 						id=""
@@ -107,7 +89,7 @@ const AddProduct = () => {
 						type="number"
 						className="p-4 border-2 "
 						placeholder="Enter Price Here"
-						value={form.price}
+						value={form.price === 0 ? "Enter Price Here" : form.price}
 						onChange={handleInput}
 						name="price"
 					/>

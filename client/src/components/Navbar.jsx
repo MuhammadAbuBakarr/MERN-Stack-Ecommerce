@@ -3,13 +3,12 @@ import Cart from "./cart/Cart";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../redux/userSlice";
-import AddProduct from "./products/AddProduct";
 const Navbar = () => {
 	const user = useSelector((state) => state.users);
 	const dispatch = useDispatch();
 	return (
 		<>
-			<div className="flex justify-around p-2 items-center bg-white sticky top-0 drop-shadow-xl ">
+			<div className="flex justify-around z-50 p-2 items-center bg-white sticky top-0 drop-shadow-xl ">
 				<Link to="/">
 					<div className=" text-slate-800 font-semibold text-xl">Home</div>
 				</Link>
@@ -41,6 +40,9 @@ const Navbar = () => {
 						</div>
 						<Link to={"/addProduct"}>
 							<div>Add Product</div>
+						</Link>
+						<Link to={"/myOrders"}>
+							<div>My Orders</div>
 						</Link>
 					</>
 				)}
