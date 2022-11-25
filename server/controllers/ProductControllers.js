@@ -21,8 +21,6 @@ exports.upload = multer({ storage: storage });
 // Routes
 exports.addProduct = async (req, res) => {
 	const image = imageName;
-	console.log(image);
-	console.log(req.body);
 	let { stock, price } = req.body;
 	price = Number(price);
 	stock = Number(stock);
@@ -40,7 +38,7 @@ exports.addProduct = async (req, res) => {
 exports.getAllProducts = (req, res) => {
 	try {
 		productModal.find({}, (err, data) => {
-			res.status(200).json(data);
+			res.status(201).json(data);
 		});
 	} catch (e) {
 		console.log(e.message);
@@ -60,10 +58,23 @@ exports.deleteProducts = async (req, res) => {
 		console.log(e.message);
 	}
 };
+exports.deleteSingleProduct = async (req, res) => {
+	const id = req.params;
+	try {
+		const del = await productModal.findOneAndDelete(id);
+		res.status(201).json({
+			mess: "deleted",
+		});
+	} catch (e) {
+		if (e) {
+			console.log(e.message);
+			return res.status(401);
+		}
+	}
+};
 
 exports.updateProduct = async (req, res) => {
 	const data = req.body;
-
 	try {
 		const updatedProduct = await productModal.findOneAndUpdate(data.id, data, {
 			new: true,
@@ -79,7 +90,6 @@ exports.updateProduct = async (req, res) => {
 
 exports.singleProduct = (req, res) => {
 	const id = req.params;
-	console.log(req.params);
 	try {
 		const product = productModal.findOne(id, (err, data) => {
 			if (!data) {

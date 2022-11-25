@@ -4,6 +4,7 @@ const initialState = {
 	id: "",
 	name: "",
 	isLoggedIn: false,
+	role: "",
 	orders: [],
 };
 
@@ -14,12 +15,14 @@ export const usersSlice = createSlice({
 		loginUser: (state, { payload }) => {
 			state.name = payload.name;
 			state.id = payload.id;
+			state.role = payload.role;
 			state.isLoggedIn = true;
 		},
 		logoutUser: (state) => {
 			state.name = "";
 			state.isLoggedIn = false;
 			state.id = "";
+			state.role = "";
 		},
 		userProducts: (state, { payload }) => {
 			state.orders = payload;

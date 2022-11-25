@@ -8,6 +8,7 @@ import Login from "./components/user/Login";
 import AddProduct from "./components/products/AddProduct";
 import ProductDetailPage from "./components/products/ProductDetailPage";
 import MyOrders from "./components/orders/MyOrders";
+import AdminDashboard from "./components/admin/AdminDashboard";
 function App() {
 	return (
 		<>
@@ -22,6 +23,7 @@ function App() {
 						<Route path="/login" element={<Login />} />
 						<Route path="/addProduct" element={<AddProduct />} />
 						<Route path="/myOrders" element={<MyOrders />} />
+						<Route path="/adminboard" element={<AdminDashboard />} />
 					</Routes>
 				</BrowserRouter>
 			</div>

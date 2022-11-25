@@ -24,10 +24,9 @@ const CartPage = () => {
 
 		try {
 			const { status } = await axios.post("/order", purchasedItems);
-			console.log(status);
 			if (status === 201) {
 				dispatch(emptyCart([]));
-				nav("/myOrders");
+				nav("/");
 			}
 		} catch (e) {
 			console.log(e.message);

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../redux/userSlice";
 
 const Login = () => {
@@ -10,16 +10,20 @@ const Login = () => {
 	const nav = useNavigate();
 	const [email, setemail] = useState("");
 	const [password, setpassword] = useState("");
-
 	const login = async () => {
 		try {
 			const { data, status } = await axios.post("/login", {
 				email,
 				password,
 			});
-			if (status === 200) {
-				const { name, id } = data;
-				dispatch(loginUser({ name, id }));
+
+			const { name, id, role } = data;
+
+			if (status === 200 && role === "admin") {
+				dispatch(loginUser({ name, id, role }));
+				nav("/adminboard");
+			} else if (status === 200 && role !== "admin") {
+				dispatch(loginUser({ name, id, role }));
 				nav("/");
 			}
 		} catch (e) {

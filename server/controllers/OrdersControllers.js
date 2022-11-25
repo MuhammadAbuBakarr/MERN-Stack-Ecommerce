@@ -13,7 +13,7 @@ exports.saveOrder = async (req, res) => {
 exports.getAllOrders = (req, res) => {
 	try {
 		ordersModel.find({}, (err, data) => {
-			res.status(200).json(data);
+			res.status(201).json(data);
 		});
 	} catch (e) {
 		console.log(e.message);
@@ -23,6 +23,7 @@ exports.getAllOrders = (req, res) => {
 exports.getUserOrders = (req, res) => {
 	const id = req.params;
 	const obj = { userId: id.id };
+
 	try {
 		ordersModel.find(obj, (err, data) => {
 			res.status(201).json(data);

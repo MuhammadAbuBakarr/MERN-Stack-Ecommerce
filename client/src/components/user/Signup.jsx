@@ -4,11 +4,13 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { emptyState } from "../../redux/productsSlice";
 import { emptyState2 } from "../../redux/userSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
+	const nav = useNavigate();
 	const dispatch = useDispatch();
-
+	const [role, setrole] = useState("");
 	const resetState = () => {
 		dispatch(emptyState([]));
 		dispatch(emptyState2);
@@ -20,30 +22,38 @@ const Signup = () => {
 		password: "",
 		cpassword: "",
 	});
-
 	let keyName, value;
 	const handleInput = (e) => {
 		keyName = e.target.name;
 		value = e.target.value;
 		setform({ ...form, [keyName]: value });
 	};
+	const userRole = () => {
+		if (role === "admin") {
+			return "admin";
+		} else {
+			return "user";
+		}
+	};
+
+	const myrole = userRole();
 
 	const isEmail = (email) =>
 		/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email);
 
 	const userData = async (e) => {
 		try {
+			const payload = { ...form, role: myrole };
 			const { name, email, password, cpassword } = form;
 			if (!name || !email || !password || !cpassword) {
-				return console.log("Cannot Signup Must be an Error");
 			} else if (!isEmail(email)) {
-				return console.log("Please Enter Valid Email Address");
 			} else if (password !== cpassword) {
-				return console.log("Confirm Password Doesn't Match the Password");
 			}
 			e.preventDefault();
-			console.log("posting to backend");
-			const response = await axios.post("/user", form);
+			const { status } = await axios.post("/user", payload);
+			if (status === 201) {
+				nav("/login");
+			}
 
 			setform({
 				id: uuidv4(),
@@ -52,10 +62,10 @@ const Signup = () => {
 				password: "",
 				cpassword: "",
 			});
+			setrole("");
 		} catch (e) {
 			if (e.status === 401) {
-				console.log("error");
-				console.log(e.message);
+				window.alert("Cannot Signup as Admin ");
 			}
 		}
 	};
@@ -99,6 +109,14 @@ const Signup = () => {
 						placeholder="Confirm Password"
 						onChange={handleInput}
 					/>
+					<input
+						type="text"
+						className="block border border-grey-light w-full p-3 rounded mb-4"
+						name="role"
+						value={role}
+						placeholder="Secret Key to Signup as admin"
+						onChange={(e) => setrole(e.target.value)}
+					/>
 					<button
 						onClick={userData}
 						className="w-full text-center py-3 rounded bg-green-400 hover:bg-green-600 text-white hover:bg-green-dark focus:outline-none my-1"
@@ -107,13 +125,18 @@ const Signup = () => {
 					</button>
 				</div>
 
-				<div className="text-grey-dark  flex items-center space-x-2">
-					<div>Already have an account?</div>
-					<Link to="/login">
-						<button className="no-underline px-4 py-2 rounded-lg bg-blue-500 border-b text-white border-blue text-blue hover:bg-blue-700">
-							Log in
-						</button>
-					</Link>
+				<div className="text-grey-dark  flexflex col items-center space-x-2">
+					<div className="flex gap-5 justify-center items-center">
+						<div>Already have an account?</div>
+						<Link to="/login">
+							<button className="no-underline px-4 py-2 rounded-lg bg-blue-500 border-b text-white border-blue text-blue hover:bg-blue-700">
+								Log in
+							</button>
+						</Link>
+					</div>
+					<div className="pt-3 text-red-600 font-bold">
+						If You don't have admin key then leave it empty
+					</div>
 				</div>
 			</div>
 		</div>

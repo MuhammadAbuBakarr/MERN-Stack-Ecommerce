@@ -5,7 +5,6 @@ const secretKey = process.env.SECRET_KEY;
 
 exports.saveUser = async (req, res) => {
 	const data = req.body;
-	console.log(data);
 	try {
 		const exists = await User.findOne({ email: data.email });
 		if (exists) {
@@ -17,13 +16,15 @@ exports.saveUser = async (req, res) => {
 		const salt = await bcrypt.genSalt(10);
 		data.password = await bcrypt.hash(data.password, salt);
 		data.cpassword = await bcrypt.hash(data.cpassword, salt);
-		console.log(data);
 
 		await User.create(data);
-		res.status(200).json({
+		res.status(201).json({
 			message: "User is Stored Succesfully",
 		});
 	} catch (e) {
+		if (e) {
+			res.status(401);
+		}
 		console.log(e.message);
 	}
 };
@@ -50,10 +51,21 @@ exports.loginUser = async (req, res) => {
 			id: myUser.id,
 			name: myUser.name,
 			email: myUser.email,
+			role: myUser.role,
 			token,
 		});
 	} catch (e) {
 		console.log(e.message);
+	}
+};
+exports.getAllUsers = (req, res) => {
+	try {
+		User.find({}, (err, data) => {
+			res.status(201).json(data);
+		});
+	} catch (e) {
+		console.log(e.message);
+		res.status(401);
 	}
 };
 
@@ -75,5 +87,30 @@ exports.deleteAllUsers = async (req, res) => {
 		});
 	} catch (error) {
 		console.log(error.message);
+	}
+};
+exports.deleteUser = async (req, res) => {
+	try {
+		const id = req.params;
+		await User.findOneAndDelete(id);
+		res.status(201);
+	} catch (e) {
+		if (e) {
+			res.status(401);
+			console.log(e.message);
+		}
+	}
+};
+
+exports.getUser = async (req, res) => {
+	try {
+		const id = req.params;
+		const user = await User.findOne(id);
+		res.status(201).json(user.name);
+	} catch (e) {
+		if (e) {
+			res.status(401);
+			console.log(e.message);
+		}
 	}
 };

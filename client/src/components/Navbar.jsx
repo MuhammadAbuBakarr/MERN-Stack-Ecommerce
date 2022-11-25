@@ -5,7 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../redux/userSlice";
 const Navbar = () => {
 	const user = useSelector((state) => state.users);
+	const orders = useSelector((state) => state.users.orders);
+	console.log(orders);
 	const dispatch = useDispatch();
+
 	return (
 		<>
 			<div className="flex justify-around z-50 p-2 items-center bg-white sticky top-0 drop-shadow-xl ">
@@ -38,12 +41,22 @@ const Navbar = () => {
 						>
 							LogOut
 						</div>
-						<Link to={"/addProduct"}>
-							<div>Add Product</div>
-						</Link>
-						<Link to={"/myOrders"}>
-							<div>My Orders</div>
-						</Link>
+						{user.role === "admin" ? (
+							<>
+								<Link to={"/adminboard"}>
+									<div>Dashboard</div>
+								</Link>
+							</>
+						) : (
+							<></>
+						)}
+						{user.role === "admin" ? (
+							<></>
+						) : (
+							<Link to={"/myOrders"}>
+								<div>My Orders</div>
+							</Link>
+						)}
 					</>
 				)}
 				<div>
