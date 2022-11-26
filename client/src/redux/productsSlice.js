@@ -1,4 +1,15 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+
+export const fetchProducts = createAsyncThunk(
+	"products/fetchProducts",
+	async (thunkAPI) => {
+		const { status, data } = await axios.get("/product");
+		if (status === 201) {
+			return data;
+		}
+	}
+);
 
 const initialState = {
 	items: [],
@@ -9,9 +20,6 @@ export const productSlice = createSlice({
 	name: "products",
 	initialState,
 	reducers: {
-		addProducts: (state, { payload }) => {
-			state.items = payload;
-		},
 		addCart: (state, { payload }) => {
 			state.cart.push({ ...payload });
 		},
@@ -37,6 +45,11 @@ export const productSlice = createSlice({
 		emptyCart: (state, { payload }) => {
 			state.cart = payload;
 		},
+	},
+	extraReducers: (builder) => {
+		builder.addCase(fetchProducts.fulfilled, (state, { payload }) => {
+			state.items = payload;
+		});
 	},
 });
 

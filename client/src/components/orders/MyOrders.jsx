@@ -8,6 +8,8 @@ const MyOrders = () => {
 	const dispatch = useDispatch();
 	const userId = useSelector((state) => state.users.id);
 	const orders = useSelector((state) => state.users.orders);
+	console.log(orders);
+
 	const NoOrdersMessage = () => {
 		if (orders.length === 0) {
 			return (
@@ -22,7 +24,7 @@ const MyOrders = () => {
 		return orders.map((e) => {
 			return (
 				<>
-					<SingleOrder key={e.id} orderId={e._id} qty={e.quantity} id={e.id} />
+					<SingleOrder key={e.id} date={e.date} qty={e.quantity} id={e.id} />
 				</>
 			);
 		});

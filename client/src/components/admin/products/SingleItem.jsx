@@ -1,7 +1,7 @@
 import axios from "axios";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { addProducts } from "../../../redux/productsSlice";
+import { fetchProducts } from "../../../redux/productsSlice";
 
 const SingleItem = ({ props }) => {
 	const { name, category, id, price, stock, image } = props;
@@ -11,10 +11,7 @@ const SingleItem = ({ props }) => {
 		try {
 			const { status } = await axios.delete(`/product/${id}`);
 			if (status === 201) {
-				const { data, status } = await axios.get("/product");
-				if (status === 201) {
-					dispatch(addProducts(data));
-				}
+				dispatch(fetchProducts());
 			}
 		} catch (e) {
 			if (e) {

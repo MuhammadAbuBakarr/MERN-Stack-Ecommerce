@@ -23,6 +23,7 @@ export const usersSlice = createSlice({
 			state.isLoggedIn = false;
 			state.id = "";
 			state.role = "";
+			state.orders = [];
 		},
 		userProducts: (state, { payload }) => {
 			state.orders = payload;

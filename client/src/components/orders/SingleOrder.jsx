@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 const SingleOrder = (props) => {
 	const id = props.id;
-	const orderId = props.orderId;
+	const orderedDate = props.date.replaceAll(" ", "/");
 	const allProducts = useSelector((s) => s.products.items);
 	const product = allProducts.find((item) => item.id === id);
 	return (
@@ -14,10 +14,8 @@ const SingleOrder = (props) => {
 					<div>{product.name}</div>
 					<div>Qty: {props.qty}</div>
 					<div>
-						OrderId:
-						<span className="ml-2 font-thin text-xs">
-							{orderId.substring(0, 8)}...
-						</span>
+						Ordered At:
+						<span className="ml-2 font-thin ">{orderedDate}</span>
 					</div>
 					<div>Price ${product.price * props.qty}</div>
 					<div className="px-5 rounded-3xl py-2 text-white font-thin tracking-wider bg-green-500">

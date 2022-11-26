@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { emptyState } from "../../redux/productsSlice";
-import { emptyState2 } from "../../redux/userSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -11,10 +9,7 @@ const Signup = () => {
 	const nav = useNavigate();
 	const dispatch = useDispatch();
 	const [role, setrole] = useState("");
-	const resetState = () => {
-		dispatch(emptyState([]));
-		dispatch(emptyState2);
-	};
+
 	const [form, setform] = useState({
 		id: uuidv4(),
 		name: "",
@@ -46,8 +41,11 @@ const Signup = () => {
 			const payload = { ...form, role: myrole };
 			const { name, email, password, cpassword } = form;
 			if (!name || !email || !password || !cpassword) {
+				window.alert("Invalid Credentials");
 			} else if (!isEmail(email)) {
+				window.alert("Invalid Credentials");
 			} else if (password !== cpassword) {
+				window.alert("Invalid Credentials");
 			}
 			e.preventDefault();
 			const { status } = await axios.post("/user", payload);
@@ -74,9 +72,7 @@ const Signup = () => {
 		<div className="bg-grey-lighter  mt-8  min-h-screen shadow-2xl flex flex-col">
 			<div className="container bg-white  shadow-2xl max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
 				<div className="bg-white px-6 py-8 rounded  text-black w-full">
-					<h1 className="mb-8 text-3xl text-center" onClick={resetState}>
-						Sign up
-					</h1>
+					<h1 className="mb-8 text-3xl text-center">Sign up</h1>
 					<input
 						type="text"
 						className="block border border-grey-light w-full p-3 rounded mb-4"

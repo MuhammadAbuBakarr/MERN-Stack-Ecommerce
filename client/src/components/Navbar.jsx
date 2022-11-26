@@ -1,13 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Cart from "./cart/Cart";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../redux/userSlice";
+import { fetchProducts } from "../redux/productsSlice";
+import { useNavigate } from "react-router-dom";
 const Navbar = () => {
 	const user = useSelector((state) => state.users);
-	const orders = useSelector((state) => state.users.orders);
-	console.log(orders);
+	const state = useSelector((state) => state);
+	console.log(state.products);
+	// console.log(appProducts);
+
+	const nav = useNavigate();
 	const dispatch = useDispatch();
+
+	const logOutUser = () => {
+		dispatch(logoutUser());
+		nav("/");
+	};
+
+	useEffect(() => {
+		dispatch(fetchProducts());
+	}, []);
 
 	return (
 		<>
@@ -35,10 +49,7 @@ const Navbar = () => {
 				) : (
 					<>
 						<div>Welcome! {user.name}</div>
-						<div
-							className="cursor-pointer"
-							onClick={() => dispatch(logoutUser())}
-						>
+						<div className="cursor-pointer" onClick={logOutUser}>
 							LogOut
 						</div>
 						{user.role === "admin" ? (
